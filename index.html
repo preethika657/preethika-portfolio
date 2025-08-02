@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preethika Lakshmi B. | Frontend Developer</title>
+  <style>
+    :root {
+      --bg-light: #f0f8ff;
+      --text-light: #1a2a4a;
+      --bg-dark: #0a192f;
+      --text-dark: #e6f1ff;
+      --primary: #64ffda;
+      --primary-dark: #52d1b2;
+      --secondary: #8892b0;
+      --accent: #112240;
+      --glass-light: rgba(255, 255, 255, 0.1);
+      --glass-dark: rgba(10, 25, 47, 0.5);
+      --highlight: rgba(100, 255, 218, 0.1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Calibre', 'Inter', sans-serif;
+      margin: 0;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+    body.light-mode {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+    }
+    body.light-mode header {
+      background-color: var(--glass-light);
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    body.light-mode nav a {
+      color: var(--text-light);
+    }
+    body.light-mode .card {
+      background: rgba(255,255,255,0.9);
+      color: var(--text-light);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    body.light-mode footer {
+      background: var(--glass-light);
+      color: var(--text-light);
+    }
+    body.light-mode .hero-text h1 {
+      color: var(--text-light);
+    }
+    body.light-mode .section h2 {
+      color: var(--text-light);
+    }
+    body.light-mode .card h3 {
+      color: var(--text-light);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: var(--glass-dark);
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--primary);
+      font-family: 'SF Mono', monospace;
+    }
+    nav {
+      display: flex;
+    }
+    nav a {
+      margin-left: 2rem;
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-family: 'SF Mono', monospace;
+      font-size: 0.9rem;
+    }
+    nav a:hover {
+      color: var(--primary);
+    }
+    nav a.active {
+      color: var(--primary);
+    }
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10rem 2rem 5rem;
+      position: relative;
+      min-height: 100vh;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .hero-text {
+      max-width: 800px;
+      z-index: 2;
+    }
+    .hero-text h4 {
+      color: var(--primary);
+      font-family: 'SF Mono', monospace;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-text h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin: 0 0 1.5rem;
+      color: var(--text-dark);
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .hero-text h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin: 0 0 1.5rem;
+      color: var(--secondary);
+      font-weight: 600;
+      line-height: 1.1;
+    }
+    .hero-text p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin-bottom: 3rem;
+    }
+    .section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease-out;
+      position: relative;
+      z-index: 2;
+    }
+    .section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .section h3 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      color: var(--primary);
+      font-family: 'SF Mono', monospace;
+    }
+    .section h2 {
+      font-size: clamp(2rem, 5vw, 2.5rem);
+      margin-bottom: 3rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      position: relative;
+    }
+    .section h2:after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 0;
+      width: 100px;
+      height: 3px;
+      background: var(--primary);
+    }
+    .projects, .certifications, .internships {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .card {
+      background: var(--accent);
+      border-radius: 5px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+      border: 1px solid rgba(100, 255, 218, 0.1);
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px -10px rgba(100, 255, 218, 0.2);
+    }
+    .card h3 {
+      color: var(--text-dark);
+      margin-top: 0;
+      font-weight: 600;
+      font-size: 1.3rem;
+    }
+    .card p {
+      margin-bottom: 1.5rem;
+    }
+    .card .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .card .tag {
+      font-family: 'SF Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--primary);
+    }
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: var(--glass-dark);
+      position: relative;
+      z-index: 2;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .dark-toggle {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: inherit;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--primary);
+      transition: 0.4s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: var(--secondary);
+    }
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    #backgroundCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Floating triangles */
+    .floating-shapes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .triangle {
+      position: absolute;
+      opacity: 0.1;
+      animation: float 30s infinite ease-in-out;
+      filter: drop-shadow(0 0 5px var(--primary));
+    }
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-20px) rotate(5deg);
+      }
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+    }
+
+    /* Sparkles */
+    .sparkle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: sparkle 2s infinite;
+      opacity: 0;
+    }
+    @keyframes sparkle {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0);
+        opacity: 0;
+      }
+    }
+
+    /* Button styles */
+    .btn {
+      display: inline-block;
+      background: transparent;
+      color: var(--primary);
+      padding: 1rem 1.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: 1px solid var(--primary);
+      font-family: 'SF Mono', monospace;
+      font-size: 0.9rem;
+    }
+    .btn:hover {
+      background: var(--highlight);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px -10px var(--primary);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+    }
+
+    /* Social links */
+    .social-links {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .social-links a {
+      color: var(--text-dark);
+      font-size: 1.5rem;
+      transition: color 0.3s ease;
+    }
+    .social-links a:hover {
+      color: var(--primary);
+    }
+
+    /* Resume section */
+    .resume-section {
+      text-align: center;
+      padding: 3rem;
+    }
+    .resume-download {
+      margin-top: 2rem;
+    }
+
+    /* Mobile Menu Styles */
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+        flex-direction: column;
+        background: var(--glass-dark);
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 70%;
+        height: 100vh;
+        padding: 2rem;
+        z-index: 1001;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: -10px 0 30px -15px rgba(2, 12, 27, 0.7);
+      }
+
+      nav.show {
+        display: flex;
+      }
+
+      nav a {
+        margin: 1rem 0;
+        font-size: 1.1rem;
+      }
+
+      /* Hamburger button styles */
+      #menuToggle {
+        display: block;
+        cursor: pointer;
+        font-size: 1.8rem;
+        background: none;
+        border: none;
+        color: var(--text-dark);
+        z-index: 1002;
+      }
+      
+      .hero {
+        padding: 8rem 2rem 5rem;
+      }
+      
+      .section h2:after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Hide hamburger on large screens */
+    #menuToggle {
+      display: none;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="dark-mode">
+  <canvas id="backgroundCanvas"></canvas>
+  <div class="floating-shapes">
+    <div class="triangle" style="width: 50px; height: 50px; background: var(--primary); top: 20%; left: 10%; animation-delay: 0s; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+    <div class="triangle" style="width: 30px; height: 30px; background: var(--primary); bottom: 30%; right: 15%; animation-delay: 5s; clip-path: polygon(50% 100%, 0 0, 100% 0);"></div>
+    <div class="triangle" style="width: 40px; height: 40px; background: var(--primary); top: 40%; right: 20%; animation-delay: 10s; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+    <div class="triangle" style="width: 35px; height: 35px; background: var(--primary); bottom: 20%; left: 15%; animation-delay: 15s; clip-path: polygon(50% 100%, 0 0, 100% 0);"></div>
+  </div>
+  
+  <header>
+    <div class="logo">Portfolio</div>
+
+    <button id="menuToggle" aria-label="Toggle menu">☰</button>
+
+    <nav id="navMenu">
+      <a href="#about">About</a>
+      <a href="#internships">Internships</a>
+      <a href="#projects">Projects</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#contact">Contact</a>
+      <a href="#resume">Resume</a>
+    </nav>
+
+    <div style="margin-left: auto; display: flex; align-items: center; gap: 2rem;">
+      <div style="text-align: center;">
+        <label class="switch">
+          <input type="checkbox" id="darkToggle" onchange="toggleDarkMode(this)" checked>
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h4>Hi, my name is</h4>
+      <h1>Preethika Lakshmi B.</h1>
+      <h2>I build things for the web.</h2>
+      <p>I'm a frontend developer specializing in building exceptional digital experiences. Currently focused on creating accessible, human-centered products.</p>
+      <a href="#projects" class="btn">View My Projects</a>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <h2>About Me</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 3rem;">
+      <div style="flex: 1; min-width: 300px;">
+        <p style="margin-bottom: 1.5rem;">
+          Hello! I'm Preethika, a frontend developer with a passion for creating beautiful, functional websites and applications. My journey in web development began when I discovered my love for turning ideas into reality through code.
+        </p>
+        <p style="margin-bottom: 1.5rem;">
+          I specialize in building responsive, accessible websites using modern technologies like React, JavaScript, and CSS. My background in design helps me bridge the gap between aesthetics and functionality.
+        </p>
+        <p style="margin-bottom: 1.5rem;">
+          Here are a few technologies I've been working with recently:
+        </p>
+        <ul style="display: grid; grid-template-columns: repeat(2, minmax(140px, 200px)); gap: 0.5rem; list-style-type: none; padding: 0;">
+          <li style="position: relative; padding-left: 1.5rem; font-family: 'SF Mono', monospace; font-size: 0.9rem;">
+            <span style="position: absolute; left: 0; color: var(--primary);">▹</span> JavaScript (ES6+)
+          </li>
+          <li style="position: relative; padding-left: 1.5rem; font-family: 'SF Mono', monospace; font-size: 0.9rem;">
+            <span style="position: absolute; left: 0; color: var(--primary);">▹</span> React
+          </li>
+          <li style="position: relative; padding-left: 1.5rem; font-family: 'SF Mono', monospace; font-size: 0.9rem;">
+            <span style="position: absolute; left: 0; color: var(--primary);">▹</span> TypeScript
+          </li>
+          <li style="position: relative; padding-left: 1.5rem; font-family: 'SF Mono', monospace; font-size: 0.9rem;">
+            <span style="position: absolute; left: 0; color: var(--primary);">▹</span> Node.js
+          </li>
+          <li style="position: relative; padding-left: 1.5rem; font-family: 'SF Mono', monospace; font-size: 0.9rem;">
+            <span style="position: absolute; left: 0; color: var(--primary);">▹</span> Next.js
+          </li>
+          <li style="position: relative; padding-left: 1.5rem; font-family: 'SF Mono', monospace; font-size: 0.9rem;">
+            <span style="position: absolute; left: 0; color: var(--primary);">▹</span> GraphQL
+          </li>
+        </ul>
+      </div>
+      <div style="flex: 1; min-width: 300px; position: relative;">
+        <div style="max-width: 300px; margin: 0 auto; position: relative;">
+          <div style="width: 100%; height: 300px; border: 2px solid var(--primary); border-radius: 5px; position: relative; z-index: 1;"></div>
+          <div style="position: absolute; top: 20px; left: 20px; width: 100%; height: 300px; background: var(--highlight); border-radius: 5px; z-index: 0; transition: all 0.3s ease;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="internships" class="section">
+    <h2>Internships</h2>
+    <div class="internships">
+      <div class="card">
+        <h3>Frontend Developer Intern</h3>
+        <p><strong>WeAct Tech</strong> - Designed and developed responsive web applications using modern frontend technologies.</p>
+        <p>Key project: Developed the Camsoori Tea Shop e-commerce website with product catalog, cart functionality, and secure checkout.</p>
+        <div class="tags">
+          <span class="tag">React</span>
+          <span class="tag">Firebase</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JavaScript</span>
+        </div>
+        <div class="links">
+          <a href="https://www.linkedin.com/company/weact-tech/" target="_blank">Company LinkedIn</a>
+          <a href="https://camsoori-tea-shop.web.app/" target="_blank">View Project</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="section">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="card">
+        <h3>E-Commerce Website for Camsoori Tea-Shop</h3>
+        <p>Designed and developed a fully functional e-commerce platform with responsive design, mobile optimization, secure checkout and order tracking features.</p>
+        <div class="tags">
+          <span class="tag">React</span>
+          <span class="tag">Firebase</span>
+          <span class="tag">CSS</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Task Management App</h3>
+        <p>A productivity application with drag-and-drop functionality and real-time updates.</p>
+        <div class="tags">
+          <span class="tag">React</span>
+          <span class="tag">Firebase</span>
+          <span class="tag">Redux</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications" class="section">
+    <h2>Certifications</h2>
+    <div class="certifications">
+      <div class="card">
+        <h3>UI/UX Design on Figma</h3>
+        <p><strong>Cybernaut Edu-Tech LLP</strong> - Completed a 4-week course on design principles, responsive design, and advanced prototyping using Figma tools.</p>
+        <p><strong>Certificate ID:</strong> CYNUUX00268</p>
+        <p><strong>Grade:</strong> C</p>
+        <div class="tags">
+          <span class="tag">Figma</span>
+          <span class="tag">UI/UX</span>
+          <span class="tag">Prototyping</span>
+        </div>
+        <a href="Figma uiux.pdf" target="_blank" class="btn" style="margin-top: 1rem;">View Certificate</a>
+      </div>
+      <div class="card">
+        <h3>Introduction to AI Concepts</h3>
+        <p><strong>Microsoft</strong> - Completed fundamental course on artificial intelligence concepts and applications.</p>
+        <p><strong>Completion Date:</strong> July 12, 2025</p>
+        <div class="tags">
+          <span class="tag">AI</span>
+          <span class="tag">Machine Learning</span>
+          <span class="tag">Microsoft</span>
+        </div>
+        <a href="microsoft-introduction to ai concepts.pdf" target="_blank" class="btn" style="margin-top: 1rem;">View Certificate</a>
+      </div>
+      <div class="card">
+        <h3>HTML & CSS</h3>
+        <p><strong>GUVI Geek Networks</strong> - Completed comprehensive course on web development fundamentals including HTML5 and CSS3.</p>
+        <p><strong>Certificate ID:</strong> p7W8m2jO2667615BIf</p>
+        <p><strong>Issued:</strong> July 18, 2025</p>
+        <div class="tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">Web Development</span>
+        </div>
+        <a href="guvi-html and css.png" target="_blank" class="btn" style="margin-top: 1rem;">View Certificate</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="resume" class="section resume-section">
+    <h2>Resume</h2>
+    <p>Download my resume to learn more about my professional experience and skills.</p>
+    <div class="resume-download">
+      <a href="preethika resume(21.06.25).pdf" download class="btn">Download Resume</a>
+      <a href="preethika resume(21.06.25).pdf" target="_blank" class="btn" style="margin-left: 1rem;">View Resume</a>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <h2>Get In Touch</h2>
+    <p style="text-align: center; max-width: 600px; margin: 0 auto 3rem;">
+      Although I'm not currently looking for new opportunities, my inbox is always open. Whether you have a question or just want to say hi, I'll try my best to get back to you!
+    </p>
+    <div style="text-align: center;">
+      <a href="mailto:preethika657.cse@gmail.com" class="btn">Say Hello</a>
+    </div>
+    
+    <div class="social-links">
+      <a href="https://www.linkedin.com/in/preethika206/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://github.com/preethika657" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://leetcode.com/u/Preethika_Lakshmi_B/" target="_blank" aria-label="LeetCode"><i class="fas fa-code"></i></a>
+      <a href="mailto:preethika657.cse@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+    </div>
+  </section>
+
+  <footer>
+    <p>Designed & Built by Preethika Lakshmi B.</p>
+    <p style="margin-top: 1rem; font-size: 0.9rem;">© 2023 All Rights Reserved</p>
+  </footer>
+
+  <script>
+    function toggleDarkMode(checkbox) {
+      const isLight = checkbox.checked;
+      document.body.classList.toggle('light-mode', isLight);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.section').forEach(section => {
+        observer.observe(section);
+      });
+
+      // Mobile menu toggle
+      const menuToggle = document.getElementById('menuToggle');
+      const navMenu = document.getElementById('navMenu');
+
+      menuToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('show');
+      });
+
+      // Highlight active nav link on scroll
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+      function activateLinkOnScroll() {
+        let scrollY = window.pageYOffset;
+
+        sections.forEach(section => {
+          const sectionHeight = section.offsetHeight;
+          const sectionTop = section.offsetTop - 100;
+          const sectionId = section.getAttribute('id');
+
+          if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === `#${sectionId}`) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      }
+
+      window.addEventListener('scroll', activateLinkOnScroll);
+      activateLinkOnScroll();
+
+      // Create sparkles
+      function createSparkles() {
+        const container = document.querySelector('.hero');
+        for (let i = 0; i < 20; i++) {
+          const sparkle = document.createElement('div');
+          sparkle.classList.add('sparkle');
+          sparkle.style.left = `${Math.random() * 100}%`;
+          sparkle.style.top = `${Math.random() * 100}%`;
+          sparkle.style.animationDelay = `${Math.random() * 5}s`;
+          container.appendChild(sparkle);
+        }
+      }
+      createSparkles();
+    });
+
+    // Floating triangles background
+    const canvas = document.getElementById('backgroundCanvas');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    
+    // Dark blue colors
+    const colors = [
+      'rgba(100, 255, 218, 0.05)',  // primary teal
+      'rgba(136, 146, 176, 0.05)',  // secondary gray
+      'rgba(17, 34, 64, 0.05)',      // accent blue
+      'rgba(10, 25, 47, 0.05)'       // dark blue
+    ];
+    
+    // Create triangles
+    let triangles = [];
+    const triangleCount = 20;
+    
+    for (let i = 0; i < triangleCount; i++) {
+      triangles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 20 + 10,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        speedX: (Math.random() - 0.5) * 0.2,
+        speedY: (Math.random() - 0.5) * 0.2,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.01,
+        direction: Math.random() > 0.5 ? 1 : -1
+      });
+    }
+    
+    function drawTriangle(triangle) {
+      ctx.save();
+      ctx.translate(triangle.x, triangle.y);
+      ctx.rotate(triangle.rotation);
+      
+      ctx.beginPath();
+      if (triangle.direction > 0) {
+        // Point-up triangle
+        ctx.moveTo(0, -triangle.size/2);
+        ctx.lineTo(-triangle.size/2, triangle.size/2);
+        ctx.lineTo(triangle.size/2, triangle.size/2);
+      } else {
+        // Point-down triangle
+        ctx.moveTo(0, triangle.size/2);
+        ctx.lineTo(-triangle.size/2, -triangle.size/2);
+        ctx.lineTo(triangle.size/2, -triangle.size/2);
+      }
+      ctx.closePath();
+      
+      ctx.fillStyle = triangle.color;
+      ctx.fill();
+      ctx.restore();
+    }
+    
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      
+      // Update and draw triangles
+      triangles.forEach(triangle => {
+        triangle.x += triangle.speedX;
+        triangle.y += triangle.speedY;
+        triangle.rotation += triangle.rotationSpeed;
+        
+        // Wrap around edges
+        if (triangle.x < -triangle.size) triangle.x = width + triangle.size;
+        if (triangle.x > width + triangle.size) triangle.x = -triangle.size;
+        if (triangle.y < -triangle.size) triangle.y = height + triangle.size;
+        if (triangle.y > height + triangle.size) triangle.y = -triangle.size;
+        
+        drawTriangle(triangle);
+      });
+      
+      requestAnimationFrame(animate);
+    }
+    
+    animate();
+    
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
